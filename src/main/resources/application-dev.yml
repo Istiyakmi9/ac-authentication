@@ -15,15 +15,15 @@ spring:
 
     driver-class-name: com.mysql.cj.jdbc.Driver
 
-  security:
-    oauth2:
-      client:
-        registration:
-          google:
-            client-id: 622966386962-pcep2a9p2l0j75p1nrl5m7clhlln3eil.apps.googleusercontent.com
-            client-secret: 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
-            scope: email,profile
-            redirect-uri: http://localhost:4200
+#  security:
+#    oauth2:
+#      client:
+#        registration:
+#          google:
+#            client-id: 622966386962-pcep2a9p2l0j75p1nrl5m7clhlln3eil.apps.googleusercontent.com
+#            client-secret: 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
+#            scope: email,profile
+#            redirect-uri: http://localhost:4200
 
 eureka:
   client:
