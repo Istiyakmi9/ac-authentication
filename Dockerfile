@@ -12,6 +12,6 @@ FROM openjdk:17-oracle
 WORKDIR /app
 EXPOSE 8090
 
-COPY --from=MAVEN /build/target/apigateway.jar /app/
+COPY --from=MAVEN /build/target/axilcorps_authservice.jar /app/
 
-ENTRYPOINT ["java", "-jar", "apigateway.jar", "--spring.profiles.active=prod"]
+ENTRYPOINT ["java", "-jar", "axilcorps_authservice.jar", "--spring.profiles.active=prod"]

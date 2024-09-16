@@ -33,7 +33,7 @@ jobs:
     - uses: mr-smithers-excellent/docker-build-push@v6
       name: Build & push Docker image
       with:
-        image: istiyaqmi9/ems_apigateway
+        image: istiyaqmi9/axilcorps-authentication
         tags: latest
         registry: docker.io
         dockerfile: Dockerfile
