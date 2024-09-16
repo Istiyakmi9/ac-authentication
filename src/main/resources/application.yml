@@ -1,0 +1,48 @@
+server:
+  port: 8180
+
+spring:
+  profiles:
+    active: ${profile:prod}
+  application:
+    name: authenticator-service
+
+  cloud:
+    config:
+      enabled: false
+
+  main:
+    web-application-type: reactive
+
+  jpa:
+    properties.hibernate.dialect: org.hibernate.dialect.MySQL8Dialect
+    show-sql: true
+    hibernate:
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+  #      ddl-auto: create-drop
+
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+
+  mvc:
+    static-path-pattern: /applicationfiles/**
+
+  ## MULTIPART PROPERTIES
+  servlet:
+    multipart:
+      enabled: true
+      file-size-threshold: 2MB
+      max-file-size: 10MB
+      max-request-size: 12MB
+
+eureka:
+  client:
+    enabled: false
+
+logging:
+  level:
+    org:
+      springframework:
+        web: DEBUG
+      hibernate: ERROR

@@ -1,0 +1,32 @@
+spring:
+  cloud:
+    config:
+      enabled: false
+
+  datasource:
+    url: jdbc:mysql://178.16.138.169:3308/axilcorps
+    username: root
+    password: live@Bottomhalf_001
+
+    #    local instance
+#    url: jdbc:mysql://localhost:3306/hiringbell
+#    username: root
+#    password: Sarfaraz@35
+
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: 622966386962-pcep2a9p2l0j75p1nrl5m7clhlln3eil.apps.googleusercontent.com
+            client-secret: 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
+            scope: email,profile
+            redirect-uri: http://localhost:4200
+
+eureka:
+  client:
+    enabled: true
+    serviceUrl:
+      defaultZone: http://localhost:8080/eureka

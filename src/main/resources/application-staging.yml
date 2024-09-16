@@ -1,0 +1,27 @@
+spring:
+  cloud:
+    config:
+      enabled: false
+
+  #Local-server(Remote)
+  datasource:
+    url: jdbc:mysql://192.168.0.101:3308/hiringbell
+    username: root
+    password: live@Bottomhalf_001
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: YOUR_GOOGLE_CLIENT_ID
+            client-secret: YOUR_GOOGLE_CLIENT_SECRET
+            scope: email,profile
+            redirect-uri: http://localhost:8080/login/oauth2/code/google
+
+eureka:
+  client:
+    enabled: false
+    serviceUrl:
+      defaultZone: http://localhost:8080/eureka
