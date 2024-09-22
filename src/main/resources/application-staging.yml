@@ -5,7 +5,7 @@ spring:
 
   #Local-server(Remote)
   datasource:
-    url: jdbc:mysql://192.168.0.101:3308/hiringbell
+    url: jdbc:mysql://192.168.0.101:3308/axilcorps
     username: root
     password: live@Bottomhalf_001
     driver-class-name: com.mysql.cj.jdbc.Driver
