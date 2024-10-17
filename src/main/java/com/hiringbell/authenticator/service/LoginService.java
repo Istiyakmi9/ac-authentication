@@ -9,10 +9,7 @@ import com.hiringbell.authenticator.entity.User;
 import com.hiringbell.authenticator.entity.UserDetail;
 import com.hiringbell.authenticator.entity.UserMedicalDetail;
 import com.hiringbell.authenticator.jwtconfig.JwtGateway;
-import com.hiringbell.authenticator.model.ApplicationConstant;
-import com.hiringbell.authenticator.model.DbParameters;
-import com.hiringbell.authenticator.model.JwtTokenModel;
-import com.hiringbell.authenticator.model.LoginResponse;
+import com.hiringbell.authenticator.model.*;
 import com.hiringbell.authenticator.repository.LoginRepository;
 import com.hiringbell.authenticator.repository.UserRepository;
 import org.jetbrains.annotations.NotNull;
@@ -25,6 +22,7 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.sql.Types;
 import java.util.*;
+import java.util.regex.Pattern;
 
 @Service
 public class LoginService implements ILoginService {
@@ -89,6 +87,7 @@ public class LoginService implements ILoginService {
             user.setUserId(1L);
             user.setEmailId(login.getEmailId());
             var loginResponse = getLoginResponse(user, loginDetail.getUserTypeId());
+            loginResponse.setMenu((List<MenuAndPermission>) data.get("menu"));
             return loginResponse;
         } catch (Exception e) {
             throw new Exception(e.getMessage());
@@ -102,12 +101,14 @@ public class LoginService implements ILoginService {
                         new DbParameters("_emailId", email, Types.VARCHAR)
                 )
         );
-        if (dataSet == null || dataSet.size() != 3)
+        if (dataSet == null || dataSet.size() != 4)
             throw new Exception("Fail to get user detail. Please contact to admin.");
 
         List<User> users = objectMapper.convertValue(dataSet.get("#result-set-1"), new TypeReference<List<User>>() {
         });
         List<Login> logins = objectMapper.convertValue(dataSet.get("#result-set-2"), new TypeReference<List<Login>>() {
+        });
+        List<MenuAndPermission> menuAndPermissions = objectMapper.convertValue(dataSet.get("#result-set-3"), new TypeReference<List<MenuAndPermission>>() {
         });
         if (logins.isEmpty())
             return null;
@@ -115,6 +116,7 @@ public class LoginService implements ILoginService {
         Map<String, Object> response = new HashMap<>();
         //response.put("UserDetail", users.get(0));
         response.put("LoginDetail", logins.get(0));
+        response.put("menu", menuAndPermissions);
         return response;
     }
 
@@ -306,4 +308,51 @@ public class LoginService implements ILoginService {
         return loginResponse;
     }
 
+    public String changePasswordService(Login login) throws Exception {
+        if (login.getEmployeeId() == 0)
+            throw new Exception("Invalid user. Please login again");
+
+        if (login.getPassword()== null || login.getPassword().isEmpty())
+            throw new Exception("Invalid old password");
+
+        if (login.getNewPassword()== null || login.getNewPassword().isEmpty())
+            throw new Exception("Invalid new password");
+
+        if (!isValidPassword(login.getNewPassword()))
+            throw new Exception("New password is invalid");
+
+        var loginDetail = loginRepository.getLoginByUserId(login.getEmployeeId());
+        if (loginDetail == null)
+            throw new Exception("Login detail not found");
+
+        if (!loginDetail.getPassword().equals(login.getPassword()))
+            throw new Exception("Old password is not match");
+
+        Date utilDate = new Date();
+        var currentDate = new Timestamp(utilDate.getTime());
+
+        loginDetail.setPassword(login.getNewPassword());
+        loginDetail.setUpdatedOn(currentDate);
+
+        loginRepository.save(loginDetail);
+
+        return "password changed successfully";
+    }
+
+    private boolean isValidPassword(String password) {
+        if (password.length() < 6 || password.length() > 20) {
+            return false;
+        }
+
+        String lowercase = "(.*[a-z].*)";
+        String uppercase = "(.*[A-Z].*)";
+        String special = "(.*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>\\/?.].*)";
+        String digit = "(.*[0-9].*)";
+
+        // Check for all conditions
+        return Pattern.matches(lowercase, password) &&
+                Pattern.matches(uppercase, password) &&
+                Pattern.matches(special, password) &&
+                Pattern.matches(digit, password);
+    }
 }

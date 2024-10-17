@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
 
-    @Query(value = "select e.* from user e order by e.UserId desc limit 1", nativeQuery = true)
+    @Query(value = "select e.* from users e order by e.UserId desc limit 1", nativeQuery = true)
     User getLastUserId();
 }
