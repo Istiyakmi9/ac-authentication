@@ -51,4 +51,10 @@ public class LoginController {
         var result = this.loginService.shortSignupService(login);
         return ResponseEntity.ok(ApiResponse.Ok(result));
     }
+
+    @PostMapping("/changePassword")
+    public ResponseEntity<ApiResponse> changePassword(@RequestBody Login login) throws Exception {
+        var result = this.loginService.changePasswordService(login);
+        return ResponseEntity.ok(ApiResponse.Ok(result));
+    }
 }

@@ -43,4 +43,8 @@ public class Login {
     @JsonProperty("updatedOn")
     @JsonFormat(pattern="yyyy-MM-dd'T'HH:mm:ss")
     Date updatedOn;
+
+    @JsonProperty("newPassword")
+    @Transient
+    String newPassword;
 }
