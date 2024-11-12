@@ -4,7 +4,7 @@ spring:
       enabled: false
 
   datasource:
-    url: jdbc:mysql://178.16.138.169:3308/axilcorps
+    url: jdbc:mysql://145.223.22.73:30002/axilcorps
     username: root
     password: live@Bottomhalf_001
 
